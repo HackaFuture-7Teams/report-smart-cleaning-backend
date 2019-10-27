@@ -8,3 +8,14 @@ class RawData(models.Model):
     receive_id = models.CharField(max_length=100)
     body_json = JSONField()
     ack_date = models.DateTimeField(auto_now_add=True)
+
+
+class RealData(models.Model):
+    session = models.ForeignKey(RawData, on_delete=models.PROTECT)
+    body_clean_json = JSONField()
+    ack_date = models.DateTimeField(auto_now_add=True)
+
+
+class Information(models.Model):
+    session = models.ForeignKey(RawData, on_delete=models.PROTECT)
+    information_json = JSONField()

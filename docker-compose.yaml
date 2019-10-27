@@ -24,3 +24,8 @@ services:
       - backend-cache
       - backend-db
     command: bash -c './startup-web.bash'
+  backend-metabase:
+    image: 'metabase/metabase'
+    restart: always
+    ports:
+      - '3000:3000'
