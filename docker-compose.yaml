@@ -1,0 +1,26 @@
+version: '3'
+services:
+  backend-cache:
+    image: 'redis:alpine'
+  backend-db:
+    image: 'kartoza/postgis:10.0-2.4'
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASS: pgpassword
+      POSTGRES_DBNAME: backend
+      POSTGRES_MULTIPLE_EXTENSIONS: 'postgis,postgis_topology'
+    ports:
+      - '5432:5432'
+    volumes:
+      - './.postgresql/:/var/lib/postgresql'
+  backend-service:
+    build: .
+    ports:
+      - '8000:8000'
+    volumes:
+      - './:/src'
+    depends_on:
+      - backend-cache
+      - backend-db
+    command: bash -c './startup-web.bash'
